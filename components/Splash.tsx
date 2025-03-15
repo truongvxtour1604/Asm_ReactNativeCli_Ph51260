@@ -9,7 +9,7 @@ export default function Splash({ navigation }: { navigation: any }) {
 
     return (
         <View style={styles.container}>
-            <Image source={require("../images/image0.png")} style={styles.image} />
+            <Image source={require("../images/imgSplash.png")} style={styles.image} />
         </View>
     );
 };

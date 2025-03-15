@@ -7,7 +7,7 @@ export default function SignIn({ navigation }: { navigation: any }) {
 
     return (
         <View style={styles.container}>
-            <Image source={require("../images/image1.png")} style={styles.image} />
+            <Image source={require("../images/imgSign.png")} style={styles.image} />
             <View style={styles.container2}>
                 <View style={{ alignItems: "center" }}>
                     <Text style={styles.title}>Chào mừng bạn</Text>
@@ -29,14 +29,14 @@ export default function SignIn({ navigation }: { navigation: any }) {
                         <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.signIn}>
-                    <Image source={require("../images/image2.png")} style={{ width: "100%" }} />
+                <TouchableOpacity style={styles.signIn} onPress={() => navigation.navigate("Home")}>
+                    <Image source={require("../images/imgSignIn.png")} style={{ width: "100%" }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginTop: 20 }}>
-                    <Image source={require("../images/image3.png")} style={{ width: "100%" }} />
+                    <Image source={require("../images/imgOr.png")} style={{ width: "100%" }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginTop: 30, alignItems: "center" }}>
-                    <Image source={require("../images/image4.png")} style={{ width: 94, height: 32 }} />
+                    <Image source={require("../images/imgGgFb.png")} style={{ width: 94, height: 32 }} />
                 </TouchableOpacity>
                 <View>
                     <TouchableOpacity style={styles.goToSignUp} onPress={() => navigation.navigate("SignUp")}>

@@ -5,7 +5,7 @@ export default function SearchFragment({ navigation }: { navigation: any }) {
     return (
         <View style={styles.container}>
             <Text>Search</Text>
-            <StatusBar backgroundColor="#000" barStyle="dark-content" />
+            <StatusBar barStyle={"dark-content"}/>
         </View>
     );
 };

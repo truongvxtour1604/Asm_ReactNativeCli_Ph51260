@@ -5,7 +5,7 @@ export default function NotificationFragment({ navigation }: { navigation: any }
     return (
         <View style={styles.container}>
             <Text>Notification</Text>
-            <StatusBar backgroundColor="#000" barStyle="dark-content" />
+            <StatusBar barStyle={"dark-content"}/>
         </View>
     );
 };

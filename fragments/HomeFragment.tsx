@@ -70,14 +70,14 @@ export default function HomeFragment({ navigation }: { navigation: any }) {
             <ImageBackground source={require('../images/imgHome.png')} style={styles.header}>
                 <Text style={styles.headerText}>Planta - tỏa sáng{"\n"}Không gian nhà bạn</Text>
                 <TouchableOpacity style={{ marginLeft: 20, marginTop: 10 }}>
-                    <Text style={{ color: "#007537", fontSize: 16 }}>Xem hàng mới về {"-->"}</Text>
+                    <Text style={{ color: "#007537", fontSize: 16, fontWeight: 'bold' }}>Xem hàng mới về ➝</Text>
                 </TouchableOpacity>
             </ImageBackground>
 
             <View style={{ padding: 16 }}>
                 <Text style={styles.title}>Cây trồng</Text>
                 <FlatList
-                    data={planPotsData.slice(0,4)}
+                    data={planPotsData.slice(0, 4)}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
@@ -90,7 +90,7 @@ export default function HomeFragment({ navigation }: { navigation: any }) {
             <View style={{ padding: 16 }}>
                 <Text style={styles.title}>Chậu cây</Text>
                 <FlatList
-                    data={potsData.slice(0,4)}
+                    data={potsData.slice(0, 4)}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
@@ -103,7 +103,7 @@ export default function HomeFragment({ navigation }: { navigation: any }) {
             <View style={{ padding: 16 }}>
                 <Text style={styles.title}>Phụ kiện chăm sóc</Text>
                 <FlatList
-                    data={accessoriesData.slice(0,4)}
+                    data={accessoriesData.slice(0, 4)}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                     numColumns={2}
@@ -133,10 +133,12 @@ const styles = StyleSheet.create({
         color: "#000",
         fontSize: 24,
         marginLeft: 20,
+        fontWeight: 'bold',
     },
     title: {
         fontSize: 26,
         marginBottom: 10,
+        fontWeight: 'bold',
     },
     card: {
         flex: 1,
@@ -154,6 +156,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: 18,
         marginTop: 8,
+        fontWeight: 'bold',
     },
     description: {
         color: '#888',
@@ -162,6 +165,7 @@ const styles = StyleSheet.create({
     price: {
         color: '#007537',
         fontSize: 18,
+        fontWeight: 'bold',
     },
     moreText: {
         color: '#007537',

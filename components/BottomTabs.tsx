@@ -9,7 +9,7 @@ import ProfileFragment from '../fragments/ProfileFragment';
 
 const Tab = createBottomTabNavigator();
 
-export default function Home() {
+export default function BottomTabs() {
     return (
         <Tab.Navigator
             screenOptions={{

@@ -1,11 +1,22 @@
 {
-    "user": [
+    "users": [
         {
             "id": "1",
             "name": "Vũ Xuân Trường",
             "email": "truongvxph51260@gmail.com",
             "mobile": "0973919569",
             "password": "12345678"
+        }
+    ],
+    "products": [
+        {
+            "id": "1",
+            "name": "Chậu cây cảnh",
+            "describe": "Ưa sáng",
+            "size": "Lớn",
+            "origin": "Việt Nam",
+            "quantity": 100,
+            "price": 1000 
         }
     ]
 }

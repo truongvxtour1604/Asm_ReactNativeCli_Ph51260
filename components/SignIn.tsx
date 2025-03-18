@@ -29,7 +29,7 @@ export default function SignIn({ navigation }: { navigation: any }) {
                         <Text style={styles.forgotPassword}>Quên mật khẩu?</Text>
                     </TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.signIn} onPress={() => navigation.navigate("Home")}>
+                <TouchableOpacity style={styles.signIn} onPress={() => navigation.navigate("BottomTabs")}>
                     <Image source={require("../images/imgSignIn.png")} style={{ width: "100%" }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginTop: 20 }}>

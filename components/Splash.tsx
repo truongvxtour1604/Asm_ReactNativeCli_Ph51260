@@ -17,8 +17,7 @@ export default function Splash({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundColor: "#fff",
     },
     image: {
         width: "100%",

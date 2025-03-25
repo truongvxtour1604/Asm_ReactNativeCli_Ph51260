@@ -3,8 +3,9 @@
         {
             "id": "1",
             "name": "Vũ Xuân Trường",
-            "email": "truongvxph51260@gmail.com",
+            "address": "Hà Nội",
             "mobile": "0973919569",
+            "email": "truongvxph51260@gmail.com",
             "password": "12345678"
         }
     ],
@@ -12,11 +13,12 @@
         {
             "id": "1",
             "name": "Chậu cây cảnh",
-            "describe": "Ưa sáng",
+            "type": "plan pot",
             "size": "Lớn",
             "origin": "Việt Nam",
+            "describe": "Ưa sáng",
             "quantity": 100,
-            "price": 1000 
+            "price": 1000
         }
     ]
 }

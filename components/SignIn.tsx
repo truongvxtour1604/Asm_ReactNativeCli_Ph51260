@@ -52,6 +52,7 @@ export default function SignIn({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#fff",
     },
     image: {
         width: "100%",

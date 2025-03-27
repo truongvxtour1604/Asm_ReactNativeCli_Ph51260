@@ -1,72 +1,75 @@
-import React from 'react';
-import { View, StyleSheet, Text, ImageBackground, Image, TouchableOpacity, FlatList, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+    View, StyleSheet, Text, ImageBackground, Image, TouchableOpacity,
+    FlatList, ScrollView, ActivityIndicator
+} from 'react-native';
 import { Card } from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import productService from '../services/ProductService';
 
-interface PlanPot {
+interface Product {
     id: string;
     name: string;
     type: string;
-    description: string;
+    size: string;
+    origin: string;
+    describe: string;
+    quantity: number;
     price: number;
-    image: any;
+    image: string;
 }
 
 export default function HomeFragment({ navigation }: { navigation: any }) {
-    const planPotsData = [
-        { id: "1", name: "Chậu cây cảnh", type: "Plan pot", description: "Ưa sáng", size: "Lớn", origin: "Việt Nam", quantity: 10, price: 1000, image: require("../images/imgPlanPot.png") },
-        { id: "2", name: "Chậu cây bonsai", type: "Plan pot", description: "Phong thủy", size: "Vừa", origin: "Nhật Bản", quantity: 10, price: 1500, image: require("../images/imgPlanPot.png") },
-        { id: "3", name: "Chậu sen đá", type: "Plan pot", description: "Dễ chăm sóc", size: "Nhỏ", origin: "Hàn Quốc", quantity: 10, price: 800, image: require("../images/imgPlanPot.png") },
-        { id: "4", name: "Chậu xương rồng", type: "Plan pot", description: "Ít cần nước", size: "Nhỏ", origin: "Mexico", quantity: 10, price: 750, image: require("../images/imgPlanPot.png") },
-        { id: "5", name: "Chậu lan hồ điệp", type: "Plan pot", description: "Hoa lâu tàn", size: "Lớn", origin: "Thái Lan", quantity: 10, price: 2000, image: require("../images/imgPlanPot.png") },
-        { id: "6", name: "Chậu dương xỉ", type: "Plan pot", description: "Lọc không khí", size: "Vừa", origin: "Việt Nam", quantity: 10, price: 1200, image: require("../images/imgPlanPot.png") },
-        { id: "7", name: "Chậu lưỡi hổ", type: "Plan pot", description: "Hấp thụ khí độc", size: "Vừa", origin: "Indonesia", quantity: 10, price: 1300, image: require("../images/imgPlanPot.png") },
-        { id: "8", name: "Chậu trầu bà", type: "Plan pot", description: "Dễ sống", size: "Lớn", origin: "Brazil", quantity: 10, price: 1100, image: require("../images/imgPlanPot.png") },
-        { id: "9", name: "Chậu bàng Singapore", type: "Plan pot", description: "Cây nội thất đẹp", size: "Lớn", origin: "Singapore", quantity: 10, price: 2500, image: require("../images/imgPlanPot.png") },
-        { id: "10", name: "Chậu cẩm nhung", type: "Plan pot", description: "Lá đẹp", size: "Nhỏ", origin: "Việt Nam", quantity: 10, price: 900, image: require("../images/imgPlanPot.png") },
-    ];
+    const [products, setProducts] = useState<Product[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
-    const potsData = [
-        { id: "1", name: "Chậu cây cảnh", type: "Pot", description: "Ưa sáng", size: "Lớn", origin: "Việt Nam", quantity: 10, price: 1000, image: require("../images/imgPot.png") },
-        { id: "2", name: "Chậu cây bonsai", type: "Pot", description: "Phong thủy", size: "Vừa", origin: "Nhật Bản", quantity: 10, price: 1500, image: require("../images/imgPot.png") },
-        { id: "3", name: "Chậu sen đá", type: "Pot", description: "Dễ chăm sóc", size: "Nhỏ", origin: "Hàn Quốc", quantity: 10, price: 800, image: require("../images/imgPot.png") },
-        { id: "4", name: "Chậu xương rồng", type: "Pot", description: "Ít cần nước", size: "Nhỏ", origin: "Mexico", quantity: 10, price: 750, image: require("../images/imgPot.png") },
-        { id: "5", name: "Chậu lan hồ điệp", type: "Pot", description: "Hoa lâu tàn", size: "Lớn", origin: "Thái Lan", quantity: 10, price: 2000, image: require("../images/imgPot.png") },
-        { id: "6", name: "Chậu dương xỉ", type: "Pot", description: "Lọc không khí", size: "Vừa", origin: "Việt Nam", quantity: 10, price: 1200, image: require("../images/imgPot.png") },
-        { id: "7", name: "Chậu lưỡi hổ", type: "Pot", description: "Hấp thụ khí độc", size: "Vừa", origin: "Indonesia", quantity: 10, price: 1300, image: require("../images/imgPot.png") },
-        { id: "8", name: "Chậu trầu bà", type: "Pot", description: "Dễ sống", size: "Lớn", origin: "Brazil", quantity: 10, price: 1100, image: require("../images/imgPot.png") },
-        { id: "9", name: "Chậu bàng Singapore", type: "Pot", description: "Cây nội thất đẹp", size: "Lớn", origin: "Singapore", quantity: 10, price: 2500, image: require("../images/imgPot.png") },
-        { id: "10", name: "Chậu cẩm nhung", type: "Pot", description: "Lá đẹp", size: "Nhỏ", origin: "Việt Nam", quantity: 10, price: 900, image: require("../images/imgPot.png") },
-    ];
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const data = await productService.getAllProducts();
+                setProducts(data);
+            } catch (error) {
+                console.error("Lỗi khi lấy dữ liệu sản phẩm: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
 
-    const accessoriesData = [
-        { id: "1", name: "Chậu cây cảnh", type: "Accessory", description: "Ưa sáng", size: "Lớn", origin: "Việt Nam", quantity: 10, price: 1000, image: require("../images/imgAccessory.png") },
-        { id: "2", name: "Chậu cây bonsai", type: "Accessory", description: "Phong thủy", size: "Vừa", origin: "Nhật Bản", quantity: 10, price: 1500, image: require("../images/imgAccessory.png") },
-        { id: "3", name: "Chậu sen đá", type: "Accessory", description: "Dễ chăm sóc", size: "Nhỏ", origin: "Hàn Quốc", quantity: 10, price: 800, image: require("../images/imgAccessory.png") },
-        { id: "4", name: "Chậu xương rồng", type: "Accessory", description: "Ít cần nước", size: "Nhỏ", origin: "Mexico", quantity: 10, price: 750, image: require("../images/imgAccessory.png") },
-        { id: "5", name: "Chậu lan hồ điệp", type: "Accessory", description: "Hoa lâu tàn", size: "Lớn", origin: "Thái Lan", quantity: 10, price: 2000, image: require("../images/imgAccessory.png") },
-        { id: "6", name: "Chậu dương xỉ", type: "Accessory", description: "Lọc không khí", size: "Vừa", origin: "Việt Nam", quantity: 10, price: 1200, image: require("../images/imgAccessory.png") },
-        { id: "7", name: "Chậu lưỡi hổ", type: "Accessory", description: "Hấp thụ khí độc", size: "Vừa", origin: "Indonesia", quantity: 10, price: 1300, image: require("../images/imgAccessory.png") },
-        { id: "8", name: "Chậu trầu bà", type: "Accessory", description: "Dễ sống", size: "Lớn", origin: "Brazil", quantity: 10, price: 1100, image: require("../images/imgAccessory.png") },
-        { id: "9", name: "Chậu bàng Singapore", type: "Accessory", description: "Cây nội thất đẹp", size: "Lớn", origin: "Singapore", quantity: 10, price: 2500, image: require("../images/imgAccessory.png") },
-        { id: "10", name: "Chậu cẩm nhung", type: "Accessory", description: "Lá đẹp", size: "Nhỏ", origin: "Việt Nam", quantity: 10, price: 900, image: require("../images/imgAccessory.png") },
-    ];
+    const groupedProducts = products.reduce((acc, product) => {
+        if (!acc[product.type]) {
+            acc[product.type] = [];
+        }
+        acc[product.type].push(product);
+        return acc;
+    }, {} as Record<string, Product[]>);
 
-    const renderItem = ({ item }: { item: PlanPot }) => {
-        return (
-            <Card style={styles.card} onPress={() => navigation.navigate("ProductDetail")}>
-                <Image source={item.image} style={styles.image} />
-                <Text style={styles.name}>{item.name}</Text>
-                <Text style={styles.description}>{item.description}</Text>
-                <Text style={styles.price}>{item.price}đ</Text>
-            </Card>
-        );
+    const getImageSource = (image: string) => {
+        if (image.startsWith('http')) {
+            return { uri: image };
+        } else {
+            return { uri: `file://${image}` };
+        }
     };
+
+    const renderItem = ({ item }: { item: Product }) => (
+        <Card style={styles.card} onPress={() => navigation.navigate("ProductDetail", { id: item.id })}>
+            <Image source={getImageSource(item.image)} style={styles.image} />
+            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.descibe}>{item.describe}</Text>
+            <Text style={styles.price}>{item.price}đ</Text>
+        </Card>
+    );
+
+    if (loading) {
+        return <ActivityIndicator size="large" color="#007537" style={styles.loadingIndicator} />;
+    }
 
     return (
         <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 20 }}>
             <TouchableOpacity style={styles.shoppingCart}>
-                 <Ionicons name="cart-outline" size={30} />
+                <Ionicons name="cart-outline" size={30} />
             </TouchableOpacity>
             <ImageBackground source={require("../images/imgHome.png")} style={styles.header}>
                 <Text style={styles.headerText}>Planta - tỏa sáng{"\n"}Không gian nhà bạn</Text>
@@ -75,44 +78,21 @@ export default function HomeFragment({ navigation }: { navigation: any }) {
                 </TouchableOpacity>
             </ImageBackground>
 
-            <View style={{ padding: 16 }}>
-                <Text style={styles.title}>Cây trồng</Text>
-                <FlatList
-                    data={planPotsData.slice(0, 4)}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                />
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Product")}>
-                <Text style={styles.moreText}>Xem thêm sản phẩm ➝</Text>
-            </TouchableOpacity>
+            {Object.entries(groupedProducts).map(([category, productList]) => (
+                <View key={category} style={{ paddingHorizontal: 16 }}>
+                    <Text style={styles.title}>{category}</Text>
+                    <FlatList
+                        data={productList.slice(0, 6)}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        numColumns={2}
+                    />
+                    <TouchableOpacity onPress={() => navigation.navigate("Product", { category })}>
+                        <Text style={styles.allProduct}>Xem thêm sản phẩm ➝</Text>
+                    </TouchableOpacity>
 
-            <View style={{ padding: 16 }}>
-                <Text style={styles.title}>Chậu cây</Text>
-                <FlatList
-                    data={potsData.slice(0, 4)}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                />
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Product")}>
-                <Text style={styles.moreText}>Xem thêm sản phẩm ➝</Text>
-            </TouchableOpacity>
-
-            <View style={{ padding: 16 }}>
-                <Text style={styles.title}>Phụ kiện chăm sóc</Text>
-                <FlatList
-                    data={accessoriesData.slice(0, 4)}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                />
-            </View>
-            <TouchableOpacity onPress={() => navigation.navigate("Product")}>
-                <Text style={styles.moreText}>Xem thêm sản phẩm ➝</Text>
-            </TouchableOpacity>
+                </View>
+            ))}
         </ScrollView>
     );
 }
@@ -139,7 +119,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 26,
-        marginBottom: 10,
+        marginBottom: 15,
         fontWeight: "bold",
     },
     card: {
@@ -160,7 +140,7 @@ const styles = StyleSheet.create({
         marginTop: 8,
         fontWeight: "bold",
     },
-    description: {
+    descibe: {
         color: "#888",
         fontSize: 12,
     },
@@ -169,11 +149,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: "bold",
     },
-    moreText: {
+    allProduct: {
         color: "#007537",
         fontSize: 16,
         textAlign: "center",
-        marginTop: 10,
+        marginTop: 15,
         fontWeight: "bold",
     },
+    loadingIndicator: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 });

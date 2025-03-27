@@ -1,7 +1,32 @@
-import React from 'react';
-import { Image, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native';
+import React, { useCallback, useState } from 'react';
+import { Image, StyleSheet, Text, TextInput, View, TouchableOpacity, Alert } from 'react-native';
+import userService from '../services/UserService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function SignUp({ navigation }: { navigation: any }) {
+    const [fullName, setFullName] = useState("");
+    const [email, setEmail] = useState("");
+    const [mobile, setMobile] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSignUp = useCallback(async () => {
+        if (!fullName || !email || !mobile || !password) {
+            Alert.alert("Lỗi", "Vui lòng nhập đầy đủ thông tin!");
+            return;
+        }
+
+        try {
+            const response = await userService.register({ name: fullName, mobile, email, password });
+
+            Alert.alert("Thành công", "Đăng ký thành công!", [
+                { text: "OK", onPress: () => navigation.navigate("SignIn") }
+            ]);
+        } catch (error: any) {
+            console.error("Lỗi đăng ký:", error.response?.data || error.message);
+            Alert.alert("Lỗi", error.response?.data?.message || "Đăng ký thất bại. Vui lòng thử lại.");
+        }
+    }, [fullName, email, mobile, password]);
+
     return (
         <View style={styles.container}>
             <Image source={require("../images/imgSign.png")} style={styles.image} />
@@ -11,10 +36,33 @@ export default function SignUp({ navigation }: { navigation: any }) {
                     <Text style={styles.subtitle}>Đăng ký tài khoản</Text>
                 </View>
                 <View style={styles.textInputContainer}>
-                    <TextInput placeholder="Họ và tên" style={styles.textInput} />
-                    <TextInput placeholder="Email" style={styles.textInput} secureTextEntry />
-                    <TextInput placeholder="Số điện thoại" style={styles.textInput} secureTextEntry />
-                    <TextInput placeholder="Mật khẩu" style={styles.textInput} secureTextEntry />
+                    <TextInput
+                        placeholder="Họ và tên"
+                        value={fullName}
+                        onChangeText={setFullName}
+                        style={styles.textInput}
+                    />
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        style={styles.textInput}
+                    />
+                    <TextInput
+                        placeholder="Số điện thoại"
+                        value={mobile}
+                        onChangeText={setMobile}
+                        keyboardType="phone-pad"
+                        style={styles.textInput}
+                    />
+                    <TextInput
+                        placeholder="Mật khẩu"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                        style={styles.textInput}
+                    />
                 </View>
                 <View style={styles.clause}>
                     <Text>Để đăng ký tài khoản, bạn đồng ý
@@ -26,7 +74,7 @@ export default function SignUp({ navigation }: { navigation: any }) {
                         <Text style={{ color: "#007537", textDecorationLine: "underline" }}>Privacy Policy</Text>
                     </Text>
                 </View>
-                <TouchableOpacity style={styles.SignUp}>
+                <TouchableOpacity style={styles.SignUp} onPress={() => handleSignUp()}>
                     <Image source={require("../images/imgSignUp.png")} style={{ width: "100%" }} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginTop: 20 }}>

@@ -7,7 +7,12 @@ export default function SearchFragment({ navigation }: { navigation: any }) {
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Tìm kiếm</Text>
-            <TextInput style={styles.input} />
+            <TextInput
+                style={styles.input}
+                placeholder="Nhập từ khóa tìm kiếm..."
+                right={<TextInput.Icon icon="magnify" size={30}/>}
+            />
+
 
             <Text style={styles.history}>Tìm kiếm gần đây</Text>
             <View style={styles.historyContainer}>
